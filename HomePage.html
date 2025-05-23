@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favorite Animals</title>
+    <script src="https://unpkg.com/vue@3.2"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #a0d2eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .images img {
+            width: 200px;
+            height: auto;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        button {
+            font-size: 20px;
+            background-color: darkslategrey;
+            color: aliceblue;  
+            padding: 10px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .image:active {
+            position: fixed;
+            top: 50%;
+            left: 50%; 
+            transform: scale(1.70) rotate(360deg) translate(-50%, -50%);
+            transition: transform .8s ease;
+        }
+        /* Vue Transition*/
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container">
+        <h1>My Favorite Animals</h1>
+        <div class="button">
+            <button v-on:click="selectAnimal('cats')">Cats</button>
+            <button v-on:click="selectAnimal('dogs')">Dogs</button>
+            <button v-on:click="selectAnimal('ducks')">Ducks</button>
+            <button v-on:click="selectAnimal('cows')">Cows</button>
+        </div>
+        
+
+        <!-- Dynamically Display Images Based on Selected Animal -->
+        <transition-group name="fade" tag="div" class="images">
+            <img v-for="animal in animals[selectedAnimal]"
+                 :key="animal.name"
+                 :src="getImagePath(animal.source)"
+                 :alt="animal.name"
+                 class="image">
+        </transition-group>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        createApp({
+            data() {
+                return {
+                    animals: {
+                        cats: [
+                            { name: 'cat1', source: 'assets/cat1.jpg' },
+                            { name: 'cat2', source: 'assets/cat2.jpg' },
+                            { name: 'cat3', source: 'assets/cat3.jpg' },
+                            { name: 'cat4', source: 'assets/cat4.jpg' },
+                        ],
+                        dogs: [
+                            { name: 'dog1', source: 'assets/dog1.jpg' },
+                            { name: 'dog2', source: 'assets/dog2.jpg' },
+                            { name: 'dog3', source: 'assets/dog3.jpg' },
+                            { name: 'dog4', source: 'assets/dog4.jpg' },
+                        ],
+                        ducks: [
+                            { name: 'duck1', source: 'assets/duck1.jpg' },
+                            { name: 'duck2', source: 'assets/duck2.jpg' },
+                            { name: 'duck3', source: 'assets/duck3.jpg' },
+                            { name: 'duck4', source: 'assets/duck4.jpg' }
+                        ],
+                        cows: [
+                            { name: 'cow1', source: 'assets/cow1.jpg' },
+                            { name: 'cow2', source: 'assets/cow2.jpg' },
+                            { name: 'cow3', source: 'assets/cow3.jpg' },
+                            { name: 'cow4', source: 'assets/cow4.jpg' }
+                        ]
+                    },
+                    selectedAnimal: 'cats',
+                    bgAnimal: ''
+                };
+            },
+            methods: {
+                selectAnimal(animalType) {
+                    console.log("Selected:", animalType);   // Debugging
+                    if (this.animals[animalType]) {
+                        this.selectedAnimal = animalType;
+                    } else {
+                        console.error("Invalid animal selected:", animalType);
+                    }
+                },
+                getImagePath(filename) {
+                    return filename;
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
